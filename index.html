@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Henry Button</title>
+
+  <style>
+    body {
+      margin: 0;
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: system-ui, Arial, sans-serif;
+    }
+
+    .henry-wrapper {
+      position: relative;
+      width: 420px;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .henry-img {
+      width: 100%;
+      display: block;
+      filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+      transform-origin: 50% 50%;
+    }
+
+    .henry-banner {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translate(-50%, -16px) scale(0.8);
+      opacity: 0;
+      padding: 10px 22px;
+      border-radius: 999px;
+      background: linear-gradient(135deg,#ff4ecd,#ffb347,#4dd6ff,#7cff6b);
+      background-size: 300% 300%;
+      color: #fff;
+      font: 900 18px "Comic Sans MS","Baloo 2",system-ui,sans-serif;
+      letter-spacing: .15em;
+      text-shadow: 0 2px 6px rgba(0,0,0,.35);
+      box-shadow: 0 10px 25px rgba(0,0,0,.35),
+                  inset 0 0 0 2px rgba(255,255,255,.25);
+      pointer-events: none;
+    }
+
+    .boom {
+      position: absolute;
+      inset: -20%;
+      border-radius: 50%;
+      background: radial-gradient(circle,
+        rgba(255,255,255,.9),
+        rgba(255,200,80,.6),
+        rgba(255,80,80,.3),
+        transparent 70%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .active .henry-img {
+      animation: henryBoom 420ms cubic-bezier(.2,.9,.2,1);
+      filter: brightness(1.3) contrast(1.15) saturate(1.2)
+              drop-shadow(0 0 25px rgba(255,180,60,.9));
+    }
+
+    .active .henry-banner {
+      opacity: 1;
+      transform: translate(-50%, 0) scale(1);
+      animation: rainbowMove 1s linear infinite;
+    }
+
+    .active .boom {
+      animation: boomFlash 420ms ease-out;
+    }
+
+    @keyframes henryBoom {
+      0%   { transform: scale(1) rotate(0deg); }
+      20%  { transform: scale(1.22) rotate(-2deg); }
+      40%  { transform: scale(1.08) rotate(2deg); }
+      60%  { transform: scale(1.14) rotate(-1deg); }
+      80%  { transform: scale(1.06) rotate(1deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+
+    @keyframes boomFlash {
+      from { opacity: 0; }
+      20%  { opacity: 1; }
+      to   { opacity: 0; }
+    }
+
+    @keyframes rainbowMove {
+      0%   { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="henry-wrapper" onclick="triggerHenry()">
+    <img
+      src="https://drive.google.com/thumbnail?id=1QHjkLqUZM6XCNKU4a2RFKTcVZhYypGp8&sz=w1400"
+      class="henry-img"
+      alt="Henry"
+    />
+    <div class="henry-banner">HENRY</div>
+    <div class="boom"></div>
+  </div>
+
+  <audio id="henry-audio" preload="auto">
+    <source src="./henry.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    function triggerHenry() {
+      const el = document.querySelector('.henry-wrapper');
+      const audio = document.getElementById('henry-audio');
+
+      if (el.classList.contains('active')) return;
+      el.classList.add('active');
+
+      audio.currentTime = 0;
+      audio.volume = 0.9;
+      audio.play().catch(() => {});
+
+      setTimeout(() => {
+        el.classList.remove('active');
+      }, 900);
+    }
+  </script>
+
+</body>
+</html>
